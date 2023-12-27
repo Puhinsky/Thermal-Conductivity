@@ -1,8 +1,11 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace DatabaseLibrary
 {
@@ -10,6 +13,7 @@ namespace DatabaseLibrary
     {
         public static async Task Export(this Database database, string filePath)
         {
+            var watch = Stopwatch.StartNew();
             var result = string.Empty;
 
             result = result.WriteGroup("GRID", database.ExportGridGroup());
@@ -18,7 +22,8 @@ namespace DatabaseLibrary
 
             await File.WriteAllTextAsync(filePath, result);
 
-            Debug.Log($"Database exported: {filePath}");
+            watch.Stop();
+            Debug.Log($"Database exported in {watch.ElapsedMilliseconds} ms: {filePath}");
         }
 
         private static string WriteGroup(this string destination, string groupTag, string groupValue)
@@ -28,17 +33,28 @@ namespace DatabaseLibrary
 
         private static string ExportGridGroup(this Database database)
         {
-            return $"{database.Lenght} {database.Conductivities.Length} {database.Measurings.Length}";
+            return $"{database.Lenght} {database.SpaceSegmentsCount} {database.TimeSegmentsCount}";
         }
 
         private static string ExportTubeGroup(this Database database)
         {
-            return string.Join(" ",database.Conductivities.Select(x=>x.ToString(CultureInfo.InvariantCulture)));
+            return string.Join(" ", database.Conductivities.Select(x => x.ToString(CultureInfo.InvariantCulture)));
         }
 
         private static string ExportTempGroup(this Database database)
         {
-            return string.Join(" ", database.Measurings.Select(m => m.ToString()));
+            var result = new List<string>();
+
+            for (int time = 0; time < database.TimeSegmentsCount; time++)
+            {
+                var firstIndexInRow = time * database.SpaceSegmentsCount;
+                var lastIndexInRow = firstIndexInRow + database.SpaceSegmentsCount;
+
+                result.Add(Convert.ToString(database.Times[time], CultureInfo.InvariantCulture));
+                result.Add(string.Join(" ", database.Temperatures[firstIndexInRow..lastIndexInRow].Select(x => Convert.ToString(x, CultureInfo.InvariantCulture))));
+            }
+
+            return string.Join(" ", result);
         }
     }
 }
