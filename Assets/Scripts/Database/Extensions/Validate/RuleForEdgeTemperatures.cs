@@ -1,4 +1,6 @@
-﻿namespace DatabaseLibrary
+﻿using System;
+
+namespace DatabaseLibrary
 {
     internal class RuleForEdgeTemperatures : IValidateRule
     {

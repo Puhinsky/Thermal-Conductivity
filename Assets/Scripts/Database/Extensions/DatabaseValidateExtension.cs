@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DatabaseLibrary
 {
@@ -11,19 +10,25 @@ namespace DatabaseLibrary
             new RuleForInitialTemperatures(),
             new RuleForNegativeTimes(),
             new RuleForNegativeConductivities(),
-            new RuleForEdgeTemperatures()
+            new RuleForEdgeTemperatures(),
+            new RuleForTimesOrder()
         };
 
         public static bool Validate(this Database database, out string error)
         {
             var isValid = true;
-            error = string.Empty;
+            var errors = new List<string>();
 
             foreach (var rule in _validateRules)
             {
-                isValid &= rule.Validate(database, out string ruleError);
-                error += ruleError + "\n";
+                if(!rule.Validate(database, out string ruleError))
+                {
+                    isValid = false;
+                    errors.Add(ruleError);
+                }
             }
+
+            error = string.Join("\n", errors);
 
             return isValid;
         }
