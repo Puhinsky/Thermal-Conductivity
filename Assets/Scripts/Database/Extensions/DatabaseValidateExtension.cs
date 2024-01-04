@@ -21,7 +21,7 @@ namespace DatabaseLibrary
 
             foreach (var rule in _validateRules)
             {
-                if(!rule.Validate(database, out string ruleError))
+                if (!rule.Validate(database, out string ruleError))
                 {
                     isValid = false;
                     errors.Add(ruleError);
