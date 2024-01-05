@@ -3,7 +3,9 @@
     "rootNamespace": "ForwardTask",
     "references": [
         "GUID:9d3b008b18183294cbbcb32b0f2a78f1",
-        "GUID:d8b63aba1907145bea998dd612889d6b"
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:fb24642277b1db2449da7ac148ce939d",
+        "GUID:2665a8d13d1b3f18800f46e256720795"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
