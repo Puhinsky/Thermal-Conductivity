@@ -33,18 +33,39 @@ namespace ForwardTask
 
         private double CalculateSigma(int layer)
         {
-            var deltaTime = Times[layer] - Times[layer-1];
+            var deltaTime = Times[layer] - Times[layer - 1];
 
-            return -deltaTime / (2 * math.pow(DeltaSpace, 2));
+            return deltaTime / (2 * math.pow(DeltaSpace, 2));
         }
 
         private void CalculateFirstPoint(int layer, double sigma)
         {
             var condCenter = Conductivities[0];
             var condRight = Conductivities[1];
-            var b = -sigma * (2 * condCenter + condRight) + 1;
-            var c = sigma * (condCenter + condRight);
+            var b = 1 + sigma * (2 * condCenter + condRight);
+            var c = -sigma * (condCenter + condRight);
+            var d = BoundaryConditions[GetTemperatureIndex(layer, 0)];
+            _p[0] = -c / b;
+            _q[0] = d / b;
+        }
 
+        private void CalculateMiddlePoints(int layer, double sigma)
+        {
+            for (int i = 1; i < _spaceSegments - 1; i++)
+            {
+                var condLeft = Conductivities[i-1];
+                var condCenter = Conductivities[i];
+                var condRight = Conductivities[i+1];
+                var a = sigma * ()
+                var b = 1 + sigma * (2 * condCenter + condRight);
+                var c = -sigma * (condCenter + condRight);
+                var d = BoundaryConditions[GetTemperatureIndex(layer, 0)];
+            }
+        }
+
+        private int GetTemperatureIndex(int layer, int spaceNumber)
+        {
+            return layer * _spaceSegments + spaceNumber;
         }
     }
 }
