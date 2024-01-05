@@ -1,0 +1,17 @@
+{
+    "name": "ForwardTask",
+    "rootNamespace": "ForwardTask",
+    "references": [
+        "GUID:9d3b008b18183294cbbcb32b0f2a78f1",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
