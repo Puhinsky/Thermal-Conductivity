@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DatabaseLibrary
 {
-    public class DatabaseParser : MonoBehaviour
+    public class DatabaseWrapper : MonoBehaviour
     {
         [Command("deserialize-db")]
         public async void DeserializeDatabase(string filePath)
