@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -34,6 +35,7 @@ namespace ForwardTask
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CalculateOnLayer(in int layer)
         {
             var sigma = CalculateSigma(layer);
@@ -43,6 +45,7 @@ namespace ForwardTask
             BackPropagation(layer);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private double CalculateSigma(in int layer)
         {
             var deltaTime = Times[layer] - Times[layer - 1];
@@ -50,12 +53,14 @@ namespace ForwardTask
             return deltaTime / (2 * math.pow(DeltaSpace, 2));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CalculatePQOfFirstPoint(in int layer)
         {
             P[0] = 0;
             Q[0] = BoundaryConditions[GetTemperatureIndex(layer - 1, 0)];
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CalculatePQOfOtherPoints(in int layer, in double sigma)
         {
             for (int i = 1; i < _spaceSegments - 1; i++)
@@ -74,6 +79,7 @@ namespace ForwardTask
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CalculateTemperatureOfLastPoint(in int layer)
         {
             var lastTemperatureIndex = GetTemperatureIndex(layer, _spaceSegments - 1);
@@ -84,6 +90,7 @@ namespace ForwardTask
             EvaluateError(lastTemperatureIndex);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void BackPropagation(in int layer)
         {
             for (int i = _spaceSegments - 2; i >= 0; i--)
@@ -95,11 +102,13 @@ namespace ForwardTask
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private readonly int GetTemperatureIndex(in int layer, in int spaceNumber)
         {
             return layer * _spaceSegments + spaceNumber;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void EvaluateError(in int index)
         {
             if (double.IsNegative(BoundaryConditions[index]))
@@ -108,6 +117,7 @@ namespace ForwardTask
             Error[0] += math.pow(ResultTemperatures[index] - BoundaryConditions[index], 2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CopyFirstRow()
         {
             for (int i = 0; i < _spaceSegments; i++)
