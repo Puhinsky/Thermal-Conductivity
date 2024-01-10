@@ -69,15 +69,15 @@ $$T_i=p_{i+1}\cdot T_{i+1} + q_{i+1},$$
 Для первого уравнения:
 $$b_0\cdot T_0+ c_0\cdot T_1=d_0,$$
 коэффициенты $p$ и $q$ будут равны:
-$$p_1=-\frac{c_0}{b_0}$$
-$$q_1=\frac{d_0}{b_0}$$
+$$p_1=-\frac{c_0}{b_0}=-\frac{0}{1}=0$$
+$$q_1=\frac{d_0}{b_0}=\frac{d_0}{1}=d_0$$
 Для i-го уравнения:
 $$a_i\cdot T_{i-1}+b_i\cdot T_i+c_i\cdot T_{i+1}=d_i$$
 коэффициенты $p$ и $q$ будут равны:
 $$p_{i+1}=\frac{-c_i}{a_i\cdot p_i+b_i}$$
 $$q_{i+1}=\frac{d_i-a_i\cdot q_i}{a_i\cdot p_i+b_i}$$
 В последнем уравнении нужно рассчитать $T_M$:
-$$T_M=\frac{d_M-a_M\cdot q_M}{p_M\cdot a_M+b_M}$$
+$$T_M=\frac{d_M-a_M\cdot q_M}{a_M\cdot p_M+b_M}=\frac{d_M-0\cdot q_M}{0\cdot p_M+1}=d_M$$
 Далее в обратном порядке рассчитать все $T_i$:
 $$T_i=p_{i+1}\cdot T_{i+1} + q_{i+1}$$
 
