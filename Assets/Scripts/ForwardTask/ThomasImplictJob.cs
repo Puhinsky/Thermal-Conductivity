@@ -26,10 +26,10 @@ namespace ForwardTask
             _spaceSegments = Conductivities.Length;
             _timeSegments = Times.Length;
 
-            CopyFirstRow();
+            CopyFirstLayer();
             CalculateOnLayer(1);
 
-            for (int i = 1; i < _timeSegments; i++)
+            for (int i = 2; i < _timeSegments; i++)
             {
                 CalculateOnLayer(i);
             }
@@ -40,8 +40,7 @@ namespace ForwardTask
         {
             var sigma = CalculateSigma(layer);
             CalculatePQOfFirstPoint(layer);
-            CalculatePQOfOtherPoints(layer, sigma);
-            CalculateTemperatureOfLastPoint(layer);
+            CalculatePQOfOtherPoints(sigma);
             BackPropagation(layer);
         }
 
@@ -61,7 +60,7 @@ namespace ForwardTask
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CalculatePQOfOtherPoints(in int layer, in double sigma)
+        private void CalculatePQOfOtherPoints(in double sigma)
         {
             for (int i = 1; i < _spaceSegments - 1; i++)
             {
@@ -72,7 +71,7 @@ namespace ForwardTask
                 var a = -sigma * (condCenter + condLeft);
                 var b = 1 + sigma * (condLeft + 2 * condCenter + condRight);
                 var c = -sigma * (condCenter + condRight);
-                var d = ResultTemperatures[GetTemperatureIndex(layer - 1, i)];
+                var d = ResultTemperatures[i];
 
                 P[i] = -c / (a * P[i - 1] + b);
                 Q[i] = (d - a * Q[i - 1]) / (a * P[i - 1] + b);
@@ -80,25 +79,13 @@ namespace ForwardTask
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CalculateTemperatureOfLastPoint(in int layer)
-        {
-            var lastTemperatureIndex = GetTemperatureIndex(layer, _spaceSegments - 1);
-            var lastTemperatureIndexOnPreviosLayer = GetTemperatureIndex(layer - 1, _spaceSegments - 1);
-
-            ResultTemperatures[lastTemperatureIndex] = ResultTemperatures[lastTemperatureIndexOnPreviosLayer];
-
-            EvaluateError(lastTemperatureIndex);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void BackPropagation(in int layer)
         {
-            for (int i = _spaceSegments - 2; i >= 0; i--)
+            for (int i = _spaceSegments - 2; i > 0; i--)
             {
-                var temperatureIndex = GetTemperatureIndex(layer, i);
-                ResultTemperatures[temperatureIndex] = P[i] * ResultTemperatures[temperatureIndex + 1] + Q[i];
+                ResultTemperatures[i] = P[i] * ResultTemperatures[i + 1] + Q[i];
 
-                EvaluateError(temperatureIndex);
+                EvaluateError(layer, i);
             }
         }
 
@@ -109,16 +96,18 @@ namespace ForwardTask
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void EvaluateError(in int index)
+        private void EvaluateError(in int layer, in int index)
         {
-            if (double.IsNegative(BoundaryConditions[index]))
+            var temperatureIndex = GetTemperatureIndex(layer, index);
+
+            if (double.IsNegative(BoundaryConditions[temperatureIndex]))
                 return;
 
-            Error[0] += math.pow(ResultTemperatures[index] - BoundaryConditions[index], 2);
+            Error[0] += math.pow(ResultTemperatures[index] - BoundaryConditions[temperatureIndex], 2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CopyFirstRow()
+        private void CopyFirstLayer()
         {
             for (int i = 0; i < _spaceSegments; i++)
             {
