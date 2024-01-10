@@ -13,8 +13,8 @@ $$W(x,t)=-a(x)\cdot\frac{\partial T(x,t)}{\partial x}$$
 $$\frac{\partial W(x,t)}{\partial x}=\frac{W_{i+1}^{n+1}-W_{i-1}^{n+1}}{h},$$
 где $h$ – шаг по пространству. \
 Тогда:
-$$W_{i+1}^{n+1}=-a_{i+1/2}^{n+1}\cdot\frac{T_{i+1}^{n+1}-T_{i}^{n+1}}{h}=-\frac{a_{i+1}^{n+1}+a_{i}^{n+1}}{2}\cdot\frac{T_{i+1}^{n+1}-T_{i}^{n+1}}{h}$$
-$$W_{i-1}^{n+1}=-a_{i-1/2}^{n+1}\cdot\frac{T_{i}^{n+1}-T_{i-1}^{n+1}}{h}=-\frac{a_{i}^{n+1}+a_{i-1}^{n+1}}{2}\cdot\frac{T_{i+1}^{n+1}-T_{i}^{n+1}}{h}$$
+$$W_{i+1}^{n+1}=-a_{i+1/2}\cdot\frac{T_{i+1}^{n+1}-T_{i}^{n+1}}{h}=-\frac{a_{i+1}+a_{i}}{2}\cdot\frac{T_{i+1}^{n+1}-T_{i}^{n+1}}{h}$$
+$$W_{i-1}^{n+1}=-a_{i-1/2}\cdot\frac{T_{i}^{n+1}-T_{i-1}^{n+1}}{h}=-\frac{a_{i}+a_{i-1}}{2}\cdot\frac{T_{i+1}^{n+1}-T_{i}^{n+1}}{h}$$
 ## Разностная неявная схема для одномерного уравнения теплопроводности
 
 <p align="center">
@@ -23,17 +23,17 @@ $$W_{i-1}^{n+1}=-a_{i-1/2}^{n+1}\cdot\frac{T_{i}^{n+1}-T_{i-1}^{n+1}}{h}=-\frac{
 
 $$\frac{T_{i}^{n+1}-T_{i}^{n}}{\tau}=-\frac{W_{i+1}^{n+1}-W_{i-1}^{n+1}}{h},$$
 где $\tau$ – шаг по времени.
-$$\frac{T_{i}^{n+1}-T_{i}^{n}}{\tau}=\frac{\frac{(a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(T_{i+1}^{n+1}-T_{i}^{n+1})}{2h}-\frac{(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(T_{i}^{n+1}-T_{i-1}^{n+1})}{2h}}{h}$$
-$$=\frac{(a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(T_{i+1}^{n+1}-T_{i}^{n+1})-(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(T_{i}^{n+1}-T_{i-1}^{n+1})}{2h^2}$$
+$$\frac{T_{i}^{n+1}-T_{i}^{n}}{\tau}=\frac{\frac{(a_{i+1}+a_{i})\cdot(T_{i+1}^{n+1}-T_{i}^{n+1})}{2h}-\frac{(a_{i}+a_{i-1})\cdot(T_{i}^{n+1}-T_{i-1}^{n+1})}{2h}}{h}$$
+$$=\frac{(a_{i+1}+a_{i})\cdot(T_{i+1}^{n+1}-T_{i}^{n+1})-(a_{i}+a_{i-1})\cdot(T_{i}^{n+1}-T_{i-1}^{n+1})}{2h^2}$$
 Приведем выражение в линейный вид:
-$$T_{i}^{n+1}-T_{i}^{n}=\frac{\tau}{2h^2}\cdot\biggl((a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(T_{i+1}^{n+1}-T_{i}^{n+1})-(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(T_{i}^{n+1}-T_{i-1}^{n+1})\biggr)$$
-$$(a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(-\frac{\tau}{2h^2})\cdot T_{i+1}^{n+1}+\biggl(1+(a_{i+1}^{n+1}+2a_{i}^{n+1}+a_{i-1}^{n+1})\cdot\frac{\tau}{2h^2}\biggr)\cdot T_{i}^{n+1}+(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(-\frac{\tau}{2h^2})\cdot T_{i-1}^{n+1}=T^{n}_{i}$$
+$$T_{i}^{n+1}-T_{i}^{n}=\frac{\tau}{2h^2}\cdot\biggl((a_{i+1}+a_{i})\cdot(T_{i+1}^{n+1}-T_{i}^{n+1})-(a_{i}+a_{i-1})\cdot(T_{i}^{n+1}-T_{i-1}^{n+1})\biggr)$$
+$$(a_{i+1}+a_{i})\cdot(-\frac{\tau}{2h^2})\cdot T_{i+1}^{n+1}+\biggl(1+(a_{i+1}+2a_{i}+a_{i-1})\cdot\frac{\tau}{2h^2}\biggr)\cdot T_{i}^{n+1}+(a_{i}+a_{i-1})\cdot(-\frac{\tau}{2h^2})\cdot T_{i-1}^{n+1}=T^{n}_{i}$$
 На строке шириной M элементов:
 * при $m=0$:
 $$T_{0}^{n+1}=\phi_{1}^{n+1},$$
 где $\phi$ – граничное условие.
 * при $m\in{[1;M-1]}$:
-$$(a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(-\frac{\tau}{2h^2})\cdot T_{i+1}^{n+1}+\biggl(1+(a_{i+1}^{n+1}+2a_{i}^{n+1}+a_{i-1}^{n+1})\cdot\frac{\tau}{2h^2}\biggr)\cdot T_{i}^{n+1}+(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(-\frac{\tau}{2h^2})\cdot T_{i-1}^{n+1}=T^{n}_{i}$$
+$$(a_{i+1}+a_{i})\cdot(-\frac{\tau}{2h^2})\cdot T_{i+1}^{n+1}+\biggl(1+(a_{i+1}+2a_{i}+a_{i-1})\cdot\frac{\tau}{2h^2}\biggr)\cdot T_{i}^{n+1}+(a_{i}+a_{i-1})\cdot(-\frac{\tau}{2h^2})\cdot T_{i-1}^{n+1}=T^{n}_{i}$$
 * при $m=M$:
 $$T_{M}^{n+1}=\phi_{2}^{n+1}$$
 ## Алгоритм прогонки для решения трехдиагональных СЛАУ
@@ -57,9 +57,9 @@ a_1 & b_1 & c_1 \\
 \end{pmatrix}
 \end{equation},$$
 
-$a=(a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(-\frac{\tau}{2h^2}),$ \
+$a=(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(-\frac{\tau}{2h^2}),$ \
 $b=1+(a_{i+1}^{n+1}+2a_{i}^{n+1}+a_{i-1}^{n+1})\cdot\frac{\tau}{2h^2},$ \
-$c=(a_{i}^{n+1}+a_{i-1}^{n+1})\cdot(-\frac{\tau}{2h^2}),$ \
+$c=(a_{i+1}^{n+1}+a_{i}^{n+1})\cdot(-\frac{\tau}{2h^2}),$ \
 $d=T_{i}^{n},$ \
 $b_0=b_M=1,$ \
 пустые множители – нули.  
@@ -69,15 +69,15 @@ $$T_i=p_{i+1}\cdot T_{i+1} + q_{i+1},$$
 Для первого уравнения:
 $$b_0\cdot T_0+ c_0\cdot T_1=d_0,$$
 коэффициенты $p$ и $q$ будут равны:
-$$p_1=-\frac{c_0}{b_0}$$
-$$q_1=\frac{d_0}{b_0}$$
+$$p_1=-\frac{c_0}{b_0}=-\frac{0}{1}=0$$
+$$q_1=\frac{d_0}{b_0}=\frac{d_0}{1}=d_0$$
 Для i-го уравнения:
 $$a_i\cdot T_{i-1}+b_i\cdot T_i+c_i\cdot T_{i+1}=d_i$$
 коэффициенты $p$ и $q$ будут равны:
 $$p_{i+1}=\frac{-c_i}{a_i\cdot p_i+b_i}$$
 $$q_{i+1}=\frac{d_i-a_i\cdot q_i}{a_i\cdot p_i+b_i}$$
 В последнем уравнении нужно рассчитать $T_M$:
-$$T_M=\frac{d_M-a_M\cdot q_M}{p_M\cdot a_M+b_M}$$
+$$T_M=\frac{d_M-a_M\cdot q_M}{a_M\cdot p_M+b_M}=\frac{d_M-0\cdot q_M}{0\cdot p_M+1}=d_M$$
 Далее в обратном порядке рассчитать все $T_i$:
 $$T_i=p_{i+1}\cdot T_{i+1} + q_{i+1}$$
 
