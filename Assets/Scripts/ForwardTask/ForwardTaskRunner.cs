@@ -13,7 +13,7 @@ namespace ForwardTask
             var conductivities = new NativeArray<double>(database.Conductivities, Allocator.Persistent);
             var times = new NativeArray<double>(database.Times, Allocator.Persistent);
             var boundaryConditions = new NativeArray<double>(database.Temperatures, Allocator.Persistent);
-            var result = new NativeArray<double>(database.SpaceSegmentsCount * database.TimeSegmentsCount, Allocator.Persistent);
+            var result = new NativeArray<double>(database.SpaceSegmentsCount, Allocator.Persistent);
             var p = new NativeArray<double>(database.SpaceSegmentsCount - 1, Allocator.Persistent);
             var q = new NativeArray<double>(database.SpaceSegmentsCount - 1, Allocator.Persistent);
             var error = new NativeArray<double>(1, Allocator.Persistent);
